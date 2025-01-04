@@ -18,11 +18,23 @@ from .models import User
 # Create your views here.
 
 
+
+
+
+class UserManageView(View):
+    template_name = "users/login.html"
+
+    def get(self, request):
+        form_registro = UserRegisterForm()
+        form_login = LoginForm()
+
+
+
 class UserRegisterView(FormView):
-    template_name = "users/register.html"
+    template_name = "users/login.html"
     form_class = UserRegisterForm
     success_url = '/'
-
+    context_object_name = "register_form"
 
     def form_valid(self, form):
         User.objects.create_user(
@@ -37,11 +49,11 @@ class UserRegisterView(FormView):
         return super(UserRegisterView, self).form_valid(form)
 
 
-
 class LoginView(FormView):
     template_name = "users/login.html"
     form_class = LoginForm
     success_url = reverse_lazy('controller:home')
+    context_object_name = "login_form"
 
     def form_valid(self, form):
         user = authenticate(
