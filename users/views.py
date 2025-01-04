@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 
@@ -28,6 +28,18 @@ class UserManageView(View):
         form_registro = UserRegisterForm()
         form_login = LoginForm()
 
+        return render(request, self.template_name, {
+            "form_registro": form_registro,
+            "form_login": form_login
+        })
+
+    def post(self, request):
+        if "form_registro" in request.POST:
+            form_registro = UserRegisterForm(request.POST)
+            if form_registro.is_valid():
+                
+
+                return redirect("home")
 
 
 class UserRegisterView(FormView):
