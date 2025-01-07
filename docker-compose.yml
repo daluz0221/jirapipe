@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: jirapu  # Nombre de la base de datos
+      POSTGRES_USER: luis  # Usuario de la base de datos
+      POSTGRES_PASSWORD: divine02  # Contraseña para el usuario
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persistencia de datos
+    networks:
+      - app_network
+
+  web:
+    build: .
+    container_name: django-web
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app  # Montar el código en el contenedor
+    ports:
+      - "8000:8000"  # Exponer el puerto 8000
+    depends_on:
+      - db  # Asegurarse de que el contenedor de la base de datos esté listo
+    networks:
+      - app_network
+    environment:
+      - DB_HOST=db
+      - DB_NAME=jirapu
+      - DB_USER=luis
+      - DB_PASSWORD=divine02
+
+volumes:
+  postgres_data:  # Volumen para persistencia de datos de PostgreSQL
+
+networks:
+  app_network:
+    driver: bridge

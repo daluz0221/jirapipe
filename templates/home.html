@@ -12,6 +12,33 @@
     <title></title>
 </head>
 <body>
-    <h1>Inicio Jira pipe</h1>
+    <h1>Inicio Jira {{ user.get_username }}</h1>
+
+    
+    {% if user_incidencias %}
+        <h3>Tus incidencias</h3>
+        {% for incidencia in user_incidencias %}
+            Título: {{ incidencia.titulo }} <br>
+            descripcion: {{ incidencia.descripcion }}<br>
+            progreso: {{ incidencia.progreso }}<br>
+            
+            {% if incidencia.prioridad == 1 %}
+                Prioridad: Alta <br>
+            {% elif incidencia.prioridad == 2 %}
+                Prioridad: Media <br>
+            {% elif incidencia.prioridad == 3 %}
+                Prioridad: Baja     <br>
+            {% endif %}
+                
+            
+            Fecha límite: {{ incidencia.Fecha_limite }}<br>
+
+        {% endfor %}
+    {% else %}
+        <h3>De momento no tienes incidencias activas</h3>
+    {% endif %}
+        
+
+    <h3><a href="{% url 'users_app:user_logout' %}">Log out</a></h3>
 </body>
 </html>

@@ -36,10 +36,39 @@ class UserManageView(View):
     def post(self, request):
         if "form_registro" in request.POST:
             form_registro = UserRegisterForm(request.POST)
+            form_login = LoginForm()
             if form_registro.is_valid():
-                
+                User.objects.create_user(
+                    form_registro.cleaned_data.get("username"),
+                    form_registro.cleaned_data.get("email"),
+                    form_registro.cleaned_data.get("names"),
+                    form_registro.cleaned_data.get("lastnames"),
+                    form_registro.cleaned_data.get("password1"),
+                )
+                return redirect("jobs_app:home")
+        elif "form_login" in request.POST:
+            form_login = LoginForm(request.POST)
+            form_registro = UserRegisterForm()
+            if form_login.is_valid():
+                username = form_login.cleaned_data.get("username")
+                password = form_login.cleaned_data.get("password")
+                user = authenticate(request, username=username, password=password)
+                if user:
+                    login(request, user)
+                    return redirect("jobs_app:home")
+                else:
+                    form_login.add_error(None, "Credenciales inválidas")
 
-                return redirect("home")
+        else:
+            form_registro = UserRegisterForm()
+            form_login = LoginForm()
+        
+        return render(request, self.template_name, {
+            "form_registro": form_registro,
+            "form_login": form_login
+        })
+
+
 
 
 class UserRegisterView(FormView):
@@ -84,6 +113,6 @@ class LogoutView(View):
 
         return HttpResponseRedirect(
             reverse(
-                "controller:home"
+                "users_app:user_login"
             )
         )

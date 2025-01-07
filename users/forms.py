@@ -36,14 +36,16 @@ class UserRegisterForm(forms.ModelForm):
             "email"
         )
 
-    def clean_password1(self):
+    def clean(self):
+        cleaned_data = super(UserRegisterForm, self).clean()
+        print("========testnew", self.cleaned_data.get("password1"), self.cleaned_data.get("password2"))
         if len(self.cleaned_data.get("password1")) <= 5:
             self.add_error("password1", "La contraseña debe tener 6 o más caracteres")
 
-    def clean_password2(self):
         if self.cleaned_data.get("password1") != self.cleaned_data.get("password2"):
             self.add_error("password2", "Las contraseñas deben coincidir")
 
+        return cleaned_data
 
 
 class LoginForm(forms.Form):

@@ -5,10 +5,20 @@
 {% block content %}
     
     <h1>Form de login</h1>
-    {{ form_login.as_p }}
+    <form method="post" action="{% url 'users_app:user_login' %}">
+        {% csrf_token %}
+        {{ form_login.as_p }}
+        <input type="hidden" name="form_login" value="1">
+        <button type="submit">Logearse</button>
+    </form>
 
     <h2>Register form</h2>
-    {{ form_registro.as_p }}
+    <form method="post" action="{% url 'users_app:user_login' %}">
+        {% csrf_token %}
+        {{ form_registro.as_p }}
+        <input type="hidden" name="form_registro" value="1">
+        <button type="submit">Registrar</button>
+    </form>
 
 {% endblock content %}
     
