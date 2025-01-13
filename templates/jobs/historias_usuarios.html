@@ -1,0 +1,16 @@
+{% extends 'home.html' %}
+
+
+
+{% block content %}
+    
+   <h3>Hola desde la página de HU</h3>
+   
+   {% for history in user_histories %}
+        <h4>{{ history.titulo }}</h4>
+        <p>{{ history.descripcion }}</p>
+   {% endfor %}
+    
+
+{% endblock content %}
+    

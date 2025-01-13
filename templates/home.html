@@ -12,6 +12,14 @@
     <title></title>
 </head>
 <body>
+
+
+
+    
+    {% block content %}
+        
+
+        
     <h1>Inicio Jira {{ user.get_username }}</h1>
 
     
@@ -33,11 +41,14 @@
             
             Fecha límite: {{ incidencia.Fecha_limite }}<br>
 
+            <a href="{% url 'jobs_app:incidencia_detail' incidencia_slug=incidencia.slug %}">Ver incidencia</a>
+
         {% endfor %}
     {% else %}
         <h3>De momento no tienes incidencias activas</h3>
     {% endif %}
-        
+    
+    {% endblock content %}
 
     <h3><a href="{% url 'users_app:user_logout' %}">Log out</a></h3>
 </body>

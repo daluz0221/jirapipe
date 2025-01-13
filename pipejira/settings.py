@@ -91,8 +91,12 @@ WSGI_APPLICATION = 'pipejira.wsgi.application'
 
 DATABASES = {
      'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Usamos SQLite
-        'NAME': BASE_DIR / 'db.sqlite3',  # Ruta donde se guardará la base de datos
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': get_secret("DB_NAME"),
+        'USER': get_secret("DB_USER"),
+        'PASSWORD': get_secret("DB_PASSWORD"),
+        'HOST': get_secret("DB_HOST"),
+        'PORT': get_secret("DB_PORT"),
     }
 }
 

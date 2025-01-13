@@ -1,6 +1,10 @@
+import random
+
 from django.db import models
 
 # Create your models here.
+from django.utils.timezone import now
+from django.utils.text import slugify
 
 from users.models import User
 
@@ -9,10 +13,17 @@ from users.models import User
 
 
 class GeneralClass(models.Model):
-    title = models.CharField(max_length=150)
-    description = models.TextField()
-    create_date = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=150, default="")
+    slug = models.SlugField(max_length=255, unique=True)
+    description = models.TextField(default="")
+    create_date = models.DateTimeField(default=now)
     active = models.BooleanField(default=True)
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug and self.titulo:  # Generar slug si no existe
+            self.slug = slugify(self.titulo) + random(10, 99)
+        super().save(*args, **kwargs)
 
     class Meta:
         abstract = True
@@ -68,7 +79,7 @@ class HistoriaUsuario(GeneralClass):
     
 
 
-class Tareas(models.Model):
+class Tareas(GeneralClass):
     """Model definition for Tareas."""
 
     STATE_CHOICES = [
@@ -78,6 +89,7 @@ class Tareas(models.Model):
     ]    
 
     state = models.CharField(max_length=15, choices=STATE_CHOICES)
+    active = models.BooleanField(default=False)
     user_history = models.ForeignKey(HistoriaUsuario, on_delete=models.CASCADE, related_name="tareas")
 
     class Meta:
@@ -88,7 +100,7 @@ class Tareas(models.Model):
 
     def __str__(self):
         """Unicode representation of Tareas."""
-        pass
+        return self.title
     
 
 
