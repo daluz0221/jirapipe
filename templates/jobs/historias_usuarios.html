@@ -4,12 +4,25 @@
 
 {% block content %}
     
-   <h3>Hola desde la página de HU</h3>
+   <h3>Hola desde la página de HU relacionadas con la incidencia: {{ parent_incidence.titulo }}</h3>
+
    
-   {% for history in user_histories %}
-        <h4>{{ history.titulo }}</h4>
-        <p>{{ history.descripcion }}</p>
-   {% endfor %}
+   {% if user_histories %}
+      
+
+      
+   
+      {% for history in user_histories %}
+         <h4>{{ history.titulo }}</h4>
+         <p>{{ history.descripcion }}</p>
+
+         <a href="{% url 'jobs_app:history_user_detail' incidencia_slug=parent_incidence.slug history_user_slug=history.slug %}">Ver historia de usuario</a>
+
+      {% endfor %}
+
+   {% else %}
+      <h4>De momento esta incidencia no tiene historias de usuario</h4>
+   {% endif %}
     
 
 {% endblock content %}

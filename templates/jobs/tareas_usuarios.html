@@ -1,0 +1,26 @@
+{% extends 'home.html' %}
+
+
+
+{% block content %}
+    
+   <h3>Hola desde la página de HU relacionadas con la incidencia: {{ parent_history_user.titulo }}</h3>
+
+   
+   {% if tareas %}
+      
+
+      
+   
+   {% for tarea in tareas %}
+        <h4>{{ tarea.titulo }}</h4>
+        <p>{{ tarea.descripcion }}</p>
+        <p>{{ tarea.estado }}</p>
+   {% endfor %}
+   
+   {% else %}
+      <h4>De momento esta historia de usuario no tiene tareas</h4>
+   {% endif %}
+
+{% endblock content %}
+    
