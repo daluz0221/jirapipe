@@ -8,6 +8,7 @@ from django.views.generic import TemplateView
 
 from django.urls import reverse_lazy
 
+from .forms import IncidenciaForm
 from .models import Incidencias
 from .modules import get_incidents, get_history_user, get_tareas
 
@@ -21,6 +22,10 @@ class CreateLoginRequiredView(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy("users_app:user_login")
     redirect_field_name = 'next'
 
+
+
+
+
 class HomeView(MyLoginRequiredView):
     template_name = "home.html"
 
@@ -31,6 +36,7 @@ class HomeView(MyLoginRequiredView):
        
         incidencias = get_incidents("all", self.request.user)
         ctx["user_incidencias"] = incidencias
+        ctx["incidence_form"] = IncidenciaForm
         
         return ctx
 
@@ -68,22 +74,4 @@ class TareasView(MyLoginRequiredView):
 
 
 class CreateIncidenceView(CreateLoginRequiredView):
-
-    template_name = "home.html"
-    model = Incidencias
-    fields = "__all__"
-    context_object_name = "create_incidence_form"
-
-    def form_invalid(self, form):
-        return JsonResponse({
-            "success": False,
-            "errors": form.errors,
-        }, status=400)
-
-    def form_valid(self, form):
-        self.object = form.save()
-        return JsonResponse({
-            "success": True,
-            "id": self.object.id, 
-            "titulo": self.object.title
-        })
+    pass
