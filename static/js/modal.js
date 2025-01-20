@@ -6,6 +6,7 @@ openModal.addEventListener('click', ()=>{
     modal.classList.add('modal__show')
 })
 
-closeModal.addEventListener('click', ()=>{
+closeModal.addEventListener('click', (e)=>{
+   
     modal.classList.remove('modal__show')
 })

@@ -15,12 +15,15 @@
 
 
 
+    <header>
+        <h1>Página de pipe</h1>
+    </header>
     
     {% block content %}
         
 
         
-    <h1>Inicio Jira {{ user.get_username }}</h1>
+    <h2>Inicio Jira {{ user.get_username }}</h2>
 
     
     {% if user_incidencias %}
@@ -42,6 +45,7 @@
             Fecha límite: {{ incidencia.Fecha_limite }}<br>
 
             <a href="{% url 'jobs_app:incidencia_detail' incidencia_slug=incidencia.slug %}">Ver incidencia</a>
+            <br><br><br>
 
         {% endfor %}
     {% else %}
@@ -55,14 +59,15 @@
 
     <!-- Modal -->
     <section class="modal">
-        <div class="modal__container">
+        <form  class="modal__container" method="post" action="{% url 'jobs_app:create_incidence' %}">
+            {% csrf_token %}
             <!-- <div class="modal__title">modal title</div>
             <div class="modal_paragraph">
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. A asperiores, earum aperiam molestiae deserunt optio?
             </div> -->
             {{ incidence_form.as_p }}
-            <a href="#" class="modal__close">Cerrar modal</a>
-        </div>
+            <button type="submit" class="modal__close">Cerrar modal</button>
+        </form>
     </section>
     <!-- fin Modal -->
 

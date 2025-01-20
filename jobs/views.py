@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 
 from django.urls import reverse_lazy
 
-from .forms import IncidenciaForm
+from .forms import IncidenciaForm, HistoryUserForm
 from .models import Incidencias
 from .modules import get_incidents, get_history_user, get_tareas
 
@@ -54,6 +54,7 @@ class HistoryUserView(MyLoginRequiredView):
         incidencias = get_history_user("all", incident)
         ctx["user_histories"] = incidencias.get("history_list")
         ctx["parent_incidence"] = incidencias.get("incidencia_dict")
+        ctx["history_user_form"] = HistoryUserForm
         
         return ctx
 
@@ -74,4 +75,29 @@ class TareasView(MyLoginRequiredView):
 
 
 class CreateIncidenceView(CreateLoginRequiredView):
-    pass
+    
+    form_class = IncidenciaForm
+    success_url = '.'
+    template_name = 'jobs/create_incidence.html'
+
+
+    def form_valid(self, form):
+
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+    
+
+class CreateHistoryUserView(CreateLoginRequiredView):
+    
+    form_class = HistoryUserForm
+    success_url = '.'
+    template_name = 'jobs/create_history_user.html'
+
+
+    def form_valid(self, form):
+      
+        incidence_slug = self.kwargs.get("incidencia_slug")
+        incidence = get_incidents("one", self.request.user, slug=incidence_slug)
+        form.instance.incidencia = incidence
+    
+        return super().form_valid(form)

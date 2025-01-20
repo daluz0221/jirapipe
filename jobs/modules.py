@@ -8,7 +8,7 @@ from .models import Incidencias, HistoriaUsuario, Tareas
 
 
 
-def get_incidents(query_type, user):
+def get_incidents(query_type, user, **kwargs):
 
     if query_type == "all":
         incidents = Incidencias.objects.filter(user=user)
@@ -26,6 +26,15 @@ def get_incidents(query_type, user):
             incidents_list.append(incident_dic)
 
         return incidents_list
+    
+    if query_type == "one":
+        
+        slug_incidence = kwargs.get("slug")
+        incidence = Incidencias.objects.get(slug=slug_incidence)
+        
+
+        return incidence
+        
     
 
 def get_history_user(query_type, incident_slug):

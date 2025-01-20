@@ -21,8 +21,8 @@ class GeneralClass(models.Model):
 
 
     def save(self, *args, **kwargs):
-        if not self.slug and self.titulo:  # Generar slug si no existe
-            self.slug = slugify(self.titulo) + random(10, 99)
+        if not self.slug and self.title:  # Generar slug si no existe
+            self.slug = slugify(self.title) + str(random.randint(10, 99))
         super().save(*args, **kwargs)
 
     class Meta:

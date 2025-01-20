@@ -9,4 +9,34 @@ class IncidenciaForm(forms.ModelForm):
 
     class Meta:
         model = Incidencias
-        fields = '__all__'
+        fields = (
+            'title',
+            'description',
+            'type',
+            'priority',
+            'due_date'
+        )
+
+        widgets = {
+            'due_date': forms.DateInput(
+                attrs={
+                    'type': 'date'
+                }
+            )
+        }
+
+
+
+class HistoryUserForm(forms.ModelForm):
+
+    class Meta:
+        model = HistoriaUsuario
+        fields = (
+            'title',
+            'description',
+            'estimate_time'
+        )
+
+     
+
+

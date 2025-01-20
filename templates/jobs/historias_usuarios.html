@@ -24,8 +24,25 @@
       <h4>De momento esta incidencia no tiene historias de usuario</h4>
    {% endif %}
 
-   <a href="{% url 'jobs_app:home' %}">inicio</a>
+   
+   <button type="button" class="create_incidence">
+      Crear nueva incidencia
+  </button>
+
+   <section class="modal">
+      <form  class="modal__container" method="post" action="{% url 'jobs_app:create_huser' parent_incidence.slug %}">
+          {% csrf_token %}
+          <!-- <div class="modal__title">modal title</div>
+          <div class="modal_paragraph">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. A asperiores, earum aperiam molestiae deserunt optio?
+          </div> -->
+          {{ history_user_form.as_p }}
+          <button type="submit" class="modal__close">Cerrar modal</button>
+      </form>
+  </section>
     
+
+  <a href="{% url 'jobs_app:home' %}">inicio</a>
 
 {% endblock content %}
     
