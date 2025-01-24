@@ -60,6 +60,7 @@
     <!-- Modal -->
     <section class="modal">
         <form  class="modal__container" method="post" action="{% url 'jobs_app:create_incidence' %}">
+            <span class="modal__close">X</span>
             {% csrf_token %}
             <!-- <div class="modal__title">modal title</div>
             <div class="modal_paragraph">

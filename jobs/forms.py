@@ -40,3 +40,14 @@ class HistoryUserForm(forms.ModelForm):
      
 
 
+class TareasForm(forms.ModelForm):
+
+    class Meta:
+        model = Tareas
+        fields = (
+            'title',
+            'description',
+            'state'
+        )
+
+  

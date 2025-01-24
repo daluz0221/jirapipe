@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 
 from django.urls import reverse_lazy
 
-from .forms import IncidenciaForm, HistoryUserForm
+from .forms import IncidenciaForm, HistoryUserForm, TareasForm
 from .models import Incidencias
 from .modules import get_incidents, get_history_user, get_tareas
 
@@ -51,7 +51,7 @@ class HistoryUserView(MyLoginRequiredView):
 
         incident = self.kwargs.get("incidencia_slug")
        
-        incidencias = get_history_user("all", incident)
+        incidencias = get_history_user("all", incident_slug=incident)
         ctx["user_histories"] = incidencias.get("history_list")
         ctx["parent_incidence"] = incidencias.get("incidencia_dict")
         ctx["history_user_form"] = HistoryUserForm
@@ -66,10 +66,14 @@ class TareasView(MyLoginRequiredView):
         ctx = super(TareasView, self).get_context_data(**kwargs)
 
         history_user_slug = self.kwargs.get("history_user_slug")
+        incident = self.kwargs.get("incidencia_slug")
        
-        incidencias = get_tareas("all", history_user_slug)
+        incidencia = get_incidents("one", self.request.user, slug=incident)
+        incidencias = get_tareas("all", history_user_slug=history_user_slug)
         ctx["parent_history_user"] = incidencias.get("history_user_dict")
+        ctx["parent_incidence"] = incidencia
         ctx["tareas"] = incidencias.get("tareas_list")
+        ctx["tarea_form"] = TareasForm
         
         return ctx
 
@@ -99,5 +103,23 @@ class CreateHistoryUserView(CreateLoginRequiredView):
         incidence_slug = self.kwargs.get("incidencia_slug")
         incidence = get_incidents("one", self.request.user, slug=incidence_slug)
         form.instance.incidencia = incidence
+    
+        return super().form_valid(form)
+
+
+
+
+class CreateTareaView(CreateLoginRequiredView):
+    
+    form_class = TareasForm
+    success_url = '.'
+    template_name = 'jobs/create_tarea.html'
+
+
+    def form_valid(self, form):
+      
+        huser_slug = self.kwargs.get("history_user_slug")
+        hsuer = get_history_user("one", histoy_user_slug=huser_slug)
+        form.instance.user_history = hsuer
     
         return super().form_valid(form)

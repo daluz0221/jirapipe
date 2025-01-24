@@ -22,6 +22,25 @@
       <h4>De momento esta historia de usuario no tiene tareas</h4>
    {% endif %}
 
+
+   <button type="button" class="create_incidence">
+      Crear nueva Tarea
+  </button>
+
+   <section class="modal">
+      <form  class="modal__container" method="post" action="{% url 'jobs_app:create_tarea' parent_incidence.slug parent_history_user.slug %}">
+          {% csrf_token %}
+          <span class="modal__close">X</span>
+          <!-- <div class="modal__title">modal title</div>
+          <div class="modal_paragraph">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. A asperiores, earum aperiam molestiae deserunt optio?
+          </div> -->
+          {{ tarea_form.as_p }}
+          <button type="submit" class="modal__close">Cerrar modal</button>
+      </form>
+  </section>
+
+
    <a href="{% url 'jobs_app:home' %}">inicio</a>
     
 

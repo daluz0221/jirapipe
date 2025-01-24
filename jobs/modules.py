@@ -37,11 +37,12 @@ def get_incidents(query_type, user, **kwargs):
         
     
 
-def get_history_user(query_type, incident_slug):
+def get_history_user(query_type, **kwargs):
 
 
     if query_type == "all":
         try:
+            incident_slug = kwargs.get("incident_slug")
             incidencia = Incidencias.objects.get(slug=incident_slug)
             incidencia_dict = {
                 "slug": incidencia.slug,
@@ -66,15 +67,29 @@ def get_history_user(query_type, incident_slug):
 
         return {"history_list": history_list, "incidencia_dict": incidencia_dict}
     
-def get_tareas(query_type, history_user_slug):
+
+    if query_type == "one":
+        
+        try:
+            hsuer_slug = kwargs.get("histoy_user_slug")
+            huser = HistoriaUsuario.objects.get(slug=hsuer_slug)
+               
+        except HistoriaUsuario.DoesNotExist:
+            huser = None
+
+        return huser
+    
+def get_tareas(query_type, **kwargs):
 
 
     if query_type == "all":
         try:
+            history_user_slug = kwargs.get("history_user_slug")
             history_user = HistoriaUsuario.objects.get(slug=history_user_slug)
             history_user_dict = {
                 "titulo": history_user.title,
-                "descripcion": history_user.description
+                "descripcion": history_user.description,
+                "slug": history_user.slug
             }
         except HistoriaUsuario.DoesNotExist:
             history_user_dict = {}
