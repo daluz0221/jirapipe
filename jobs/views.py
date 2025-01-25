@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import TemplateView
 
 from django.urls import reverse_lazy
@@ -23,6 +23,11 @@ class CreateLoginRequiredView(LoginRequiredMixin, CreateView):
     redirect_field_name = 'next'
 
 
+class UpdateLoginRequired(LoginRequiredMixin, UpdateView):
+    login_url = reverse_lazy("users_app:user_login")
+    redirect_field_name = 'next'    
+
+
 
 
 
@@ -37,6 +42,7 @@ class HomeView(MyLoginRequiredView):
         incidencias = get_incidents("all", self.request.user)
         ctx["user_incidencias"] = incidencias
         ctx["incidence_form"] = IncidenciaForm
+        ctx["incidence_update_form"] = IncidenciaForm
         
         return ctx
 
@@ -123,3 +129,35 @@ class CreateTareaView(CreateLoginRequiredView):
         form.instance.user_history = hsuer
     
         return super().form_valid(form)
+    
+
+
+class UpdateIncidenceView(UpdateLoginRequired):
+    model = Incidencias
+    fields = (
+            'title',
+            'description',
+            'type',
+            'progress',
+            'priority',
+            'due_date'
+        )
+    slug_url_kwarg = "incidence_slug" 
+    template_name = "jobs/update_incidence.html"
+    success_url = '.'
+
+
+
+
+
+def get_data(request, slug):
+    print("me mprimo")
+    obj = get_object_or_404(Incidencias, slug=slug)
+    return JsonResponse({
+        "title": obj.title,
+        "description": obj.description,
+        "progreso": obj.progress,
+        "prioridad": obj.priority,
+        "due_date": obj.due_date,
+        "type": obj.type
+    })

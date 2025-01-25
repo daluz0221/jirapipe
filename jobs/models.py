@@ -18,6 +18,8 @@ class GeneralClass(models.Model):
     description = models.TextField(default="")
     create_date = models.DateTimeField(default=now)
     active = models.BooleanField(default=True)
+    is_delete = models.BooleanField(default=False)
+    is_completed = models.BooleanField(default=False)
 
 
     def save(self, *args, **kwargs):
@@ -113,6 +115,7 @@ class Comentarios(models.Model):
     incidencia = models.ForeignKey(Incidencias, on_delete=models.CASCADE, related_name="comentarios", null=True, blank=True)
     user_history = models.ForeignKey(HistoriaUsuario, on_delete=models.CASCADE, related_name="comentarios", null=True, blank=True)
     jobs = models.ForeignKey(Tareas, on_delete=models.CASCADE, related_name="comentarios", null=True, blank=True)
+    is_delete = models.BooleanField(default=False)
 
     class Meta:
         """Meta definition for Comentarios."""

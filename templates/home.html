@@ -1,4 +1,4 @@
-{% load static %}
+{% load static date_filters %}
 
 <!DOCTYPE html>
 <html lang='en'>
@@ -31,7 +31,7 @@
         {% for incidencia in user_incidencias %}
             Título: {{ incidencia.titulo }} <br>
             descripcion: {{ incidencia.descripcion }}<br>
-            progreso: {{ incidencia.progreso }}<br>
+            progreso: {{ incidencia.progreso|to_percentage }}<br>
             
             {% if incidencia.prioridad == 1 %}
                 Prioridad: Alta <br>
@@ -40,11 +40,17 @@
             {% elif incidencia.prioridad == 3 %}
                 Prioridad: Baja     <br>
             {% endif %}
-                
+            
+            Tipo de incidencia: {{ incidencia.tipo }} <br>
             
             Fecha límite: {{ incidencia.Fecha_limite }}<br>
 
             <a href="{% url 'jobs_app:incidencia_detail' incidencia_slug=incidencia.slug %}">Ver incidencia</a>
+            <br>
+            <!-- Botón para abrir el modal 2-->
+            <button type="button" class="edit_incidence" data-slug="{{ incidencia.slug }}">
+                Editar incidencia
+            </button>
             <br><br><br>
 
         {% endfor %}
@@ -57,8 +63,10 @@
         Crear nueva incidencia
     </button>
 
+    
+
     <!-- Modal -->
-    <section class="modal">
+    <section class="modal" id="editar_modal">
         <form  class="modal__container" method="post" action="{% url 'jobs_app:create_incidence' %}">
             <span class="modal__close">X</span>
             {% csrf_token %}
@@ -71,6 +79,70 @@
         </form>
     </section>
     <!-- fin Modal -->
+
+    <!-- Modal 2-->
+    <section id="modal_edit" class="modal">
+        <form id="edit__form" class="modal__container" method="post" >
+            <span id="close_modal" class="modal__close">X</span>
+            {% csrf_token %}
+            <!-- <div class="modal__title">modal title</div>
+            <div class="modal_paragraph">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. A asperiores, earum aperiam molestiae deserunt optio?
+            </div> -->
+            <p>
+                        <label for="id_title">Title:</label>
+                        <input type="text" name="title" maxlength="150" required="" id="id_title">
+                        
+                        
+                    </p>
+
+                    
+                    <p>
+                        <label for="id_description">Description:</label>
+                        <textarea name="description" cols="40" rows="10" required="" id="id_description"></textarea>
+                        
+                        
+                    </p>
+
+                    
+                    <p>
+                        <label for="id_type">Type:</label>
+                        <select name="type" required="" id="id_type">
+                            <option value="" selected="">---------</option>
+
+                            <option value="bug">bug</option>
+
+                            <option value="feature">feature</option>
+
+                            <option value="task">task</option>
+
+                        </select>
+                        
+                        
+                    </p>
+
+                    <p>
+                        <label for="id_progress">Progress:</label>
+                        <input type="number" name="progress" step="0.01" required="" id="id_progress">
+                        
+                        
+                      </p>
+                    <p>
+                        <label for="id_priority">Priority:</label>
+                        <input type="number" name="priority" min="0" required="" id="id_priority">
+                        
+                        
+                    </p>
+
+                    
+                    <p>
+                        <label for="id_due_date">Due date:</label>
+                        <input type="date" name="due_date" id="id_due_date">
+                    </p>-up
+            <button id="close_modal" type="submit" class="modal__close">Cerrar modal</button>
+        </form>
+    </section>
+    <!-- fin Modal 2-->
 
 
 

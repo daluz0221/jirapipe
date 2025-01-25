@@ -20,7 +20,8 @@ def get_incidents(query_type, user, **kwargs):
                 "descripcion": incident.description,
                 "progreso": incident.progress,
                 "prioridad": incident.priority,
-                "Fecha_limite": incident.due_date
+                "Fecha_limite": incident.due_date,
+                "tipo": incident.type
             }
 
             incidents_list.append(incident_dic)
