@@ -1,22 +1,54 @@
 const openModal = document.querySelector('.create_incidence');
+const openModalHistory = document.querySelector('.create_history');
+const openModalJob = document.querySelector('.create_job');
+
 const modal = document.querySelector('.modal');
 const closeModal = document.querySelector('.modal__close')
 
 const openModal2 = document.querySelectorAll('.edit_incidence');
+
+const openModalHistory2 = document.querySelectorAll('.edit_huser')
+
+
 const modal2 = document.querySelector('#modal_edit');
 const closeModal2 = document.querySelector("#close_modal");
 
+if (openModal) {
+    openModal.addEventListener('click', ()=>{
+        modal.classList.add('modal__show')
+    })
+    
+    closeModal.addEventListener('click', (e)=>{
+        modal.classList.remove('modal__show')
+    })
+} 
 
-openModal.addEventListener('click', ()=>{
-    modal.classList.add('modal__show')
-})
+if (openModalHistory) {
+    openModalHistory.addEventListener('click', ()=>{
+        modal.classList.add('modal__show')
+    })
+    
+    closeModal.addEventListener('click', (e)=>{
+        modal.classList.remove('modal__show')
+    })
+    
+}
 
-closeModal.addEventListener('click', (e)=>{
-   
-    modal.classList.remove('modal__show')
-})
+if (openModalJob) {
+    openModalJob.addEventListener('click', ()=>{
+        modal.classList.add('modal__show')
+    })
+    
+    closeModal.addEventListener('click', (e)=>{
+       
+        modal.classList.remove('modal__show')
+    })
+}
 
-function getInfo(modalId, slug) {
+
+
+
+function getIncidenceInfo(modalId, slug) {
     if (modalId == 'editar_modal' && slug) {
         fetch(`/api/incidence/${slug}`)
         .then( response => response.json() )
@@ -52,26 +84,67 @@ function getInfo(modalId, slug) {
         });     
 }}
 
-console.log(typeof openModal2);
+function getHistoryInfo(modalId, slug, parentSlug) {
+    if (modalId == 'editar_modal' && slug) {
+        fetch(`/api/history/${slug}`)
+        .then( response => response.json() )
+        .then( data =>{
+            console.log(data);
+            const title = document.querySelector('#edit__form input[name="title"]');
+            const description = document.querySelector('#edit__form textarea[name="description"]');
+            const estimate_time = document.querySelector('#edit__form input[name="estimate_time"]');
+            const form = document.querySelector('#edit__form');
+            const urlForm = `/history-user/${parentSlug}/${slug}/`
+            
+            if (title) {
+                title.value = data.title !== "" ? data.title : '';
+                description.value = data.description !== "" ? data.description : '';
+                estimate_time.value = data.tiempo_estimado !== "" ? data.tiempo_estimado : "";
+                form.action = urlForm
+
+            }else{
+                console.log("no está cargado de manera correcta");
+                
+            }
+        
+        });     
+}}
 
 
 openModal2.forEach( but =>{
     but.addEventListener('click', (event)=>{
     
-        const slug = but.getAttribute("data-slug");
-        console.log(slug);
+        const slug = but.getAttribute("data-slug")
+        
         
     
         modal2.classList.add('modal__show')
-        getInfo('editar_modal', slug)
-        
-    
-        
-        
+        getIncidenceInfo('editar_modal', slug)    
     })
 } )
 
+
+
+
+openModalHistory2.forEach( but =>{
+    but.addEventListener('click', ()=>{
+        const historySlug = but.getAttribute("data-history-slug");
+        const incidenceSlug = but.getAttribute("data-incidence-slug");
+        console.log(historySlug);
+        console.log(incidenceSlug);
+
+        modal2.classList.add('modal__show')
+        getHistoryInfo('editar_modal', historySlug, incidenceSlug)
+    })
+    
+})
+
+
+
+
+
+
+
 closeModal2.addEventListener('click', (e)=>{
-   
     modal2.classList.remove('modal__show')
 })

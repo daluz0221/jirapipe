@@ -1,0 +1,15 @@
+{% extends 'home.html' %}
+
+
+
+{% block content %}
+    
+  
+    <h1>historia de usuario creada correctamente!</h1>
+    {{data}}
+
+   <a href="{% url 'jobs_app:incidencia_detail' incidencia.slug %}">Ver incidencia</a>
+    
+
+{% endblock content %}
+    

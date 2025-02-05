@@ -9,15 +9,17 @@
    
    {% if user_histories %}
       
-
-      
-   
       {% for history in user_histories %}
          <h4>{{ history.titulo }}</h4>
          <p>{{ history.descripcion }}</p>
 
          <a href="{% url 'jobs_app:history_user_detail' incidencia_slug=parent_incidence.slug history_user_slug=history.slug %}">Ver historia de usuario</a>
 
+         <!-- Botón para abrir el modal 2-->
+         <button type="button" class="edit_huser" data-history-slug="{{ history.slug }}" data-incidence-slug="{{ parent_incidence.slug }}">
+            Editar historia de usuario
+        </button>
+        <br><br><br>
       {% endfor %}
 
    {% else %}
@@ -25,10 +27,11 @@
    {% endif %}
 
    
-   <button type="button" class="create_incidence">
-      Crear nueva incidencia
+   <button type="button" class="create_history">
+      Crear nueva historia de usuario
   </button>
 
+  <!-- Modal para Crear una historia de usuario -->
    <section class="modal">
       <form  class="modal__container" method="post" action="{% url 'jobs_app:create_huser' parent_incidence.slug %}">
          <span class="modal__close">X</span>
@@ -41,6 +44,20 @@
           <button type="submit" class="modal__close">Cerrar modal</button>
       </form>
   </section>
+
+  <!-- Modal para actualizar una historia de usuario -->
+  <section id="modal_edit" class="modal">
+   <form id="edit__form" class="modal__container" method="post" action="{% url 'jobs_app:create_huser' parent_incidence.slug %}">
+      <span id="close_modal" class="modal__close">X</span>
+       {% csrf_token %}
+       <!-- <div class="modal__title">modal title</div>
+       <div class="modal_paragraph">
+           Lorem ipsum dolor sit, amet consectetur adipisicing elit. A asperiores, earum aperiam molestiae deserunt optio?
+       </div> -->
+       {{ history_user_update_form.as_p }}
+       <button type="submit" class="modal__close">Cerrar modal</button>
+   </form>
+</section>
     
 
   <a href="{% url 'jobs_app:home' %}">inicio</a>

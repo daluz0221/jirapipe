@@ -9,7 +9,7 @@ from django.views.generic import TemplateView
 from django.urls import reverse_lazy
 
 from .forms import IncidenciaForm, HistoryUserForm, TareasForm
-from .models import Incidencias
+from .models import Incidencias, HistoriaUsuario
 from .modules import get_incidents, get_history_user, get_tareas
 
 
@@ -61,6 +61,7 @@ class HistoryUserView(MyLoginRequiredView):
         ctx["user_histories"] = incidencias.get("history_list")
         ctx["parent_incidence"] = incidencias.get("incidencia_dict")
         ctx["history_user_form"] = HistoryUserForm
+        ctx["history_user_update_form"] = HistoryUserForm
         
         return ctx
 
@@ -102,6 +103,18 @@ class CreateHistoryUserView(CreateLoginRequiredView):
     form_class = HistoryUserForm
     success_url = '.'
     template_name = 'jobs/create_history_user.html'
+    context_object_name = 'data'
+
+    def get_success_url(self):
+        return self.request.path
+    
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        incidence_slug = self.kwargs.get("incidencia_slug")
+        incidence = get_incidents("one", self.request.user, slug=incidence_slug)
+        ctx["incidencia"] = incidence
+
+        return ctx
 
 
     def form_valid(self, form):
@@ -150,8 +163,7 @@ class UpdateIncidenceView(UpdateLoginRequired):
 
 
 
-def get_data(request, slug):
-    print("me mprimo")
+def get_incidence_data(request, slug):
     obj = get_object_or_404(Incidencias, slug=slug)
     return JsonResponse({
         "title": obj.title,
@@ -160,4 +172,24 @@ def get_data(request, slug):
         "prioridad": obj.priority,
         "due_date": obj.due_date,
         "type": obj.type
+    })
+
+class UpdateHistoryUserView(UpdateLoginRequired):
+    model = HistoriaUsuario
+    fields = (
+        'title',
+        'description',
+        'estimate_time'
+    )
+    slug_url_kwarg = "huser_slug"
+    template_name = "jobs/update_huser.html"
+    success_url = "."
+
+
+def get_huser_data(request, slug):
+    obj = get_object_or_404(HistoriaUsuario, slug=slug)
+    return JsonResponse({
+        "title": obj.title,
+        "description": obj.description,
+        "tiempo_estimado": obj.estimate_time
     })
