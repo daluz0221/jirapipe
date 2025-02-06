@@ -100,8 +100,9 @@ def get_tareas(query_type, **kwargs):
         for tarea in tareas:
             tarea_dict = {
                 "titulo": tarea.title,
+                "slug": tarea.slug,
                 "descripcion": tarea.description,
-                "estado": tarea.state
+                "estado": tarea.state,
             }
             tareas_list.append(tarea_dict)
 

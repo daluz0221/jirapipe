@@ -6,8 +6,8 @@ const modal = document.querySelector('.modal');
 const closeModal = document.querySelector('.modal__close')
 
 const openModal2 = document.querySelectorAll('.edit_incidence');
-
 const openModalHistory2 = document.querySelectorAll('.edit_huser')
+const openModalJob2 = document.querySelectorAll('.edit_tarea')
 
 
 const modal2 = document.querySelector('#modal_edit');
@@ -89,7 +89,6 @@ function getHistoryInfo(modalId, slug, parentSlug) {
         fetch(`/api/history/${slug}`)
         .then( response => response.json() )
         .then( data =>{
-            console.log(data);
             const title = document.querySelector('#edit__form input[name="title"]');
             const description = document.querySelector('#edit__form textarea[name="description"]');
             const estimate_time = document.querySelector('#edit__form input[name="estimate_time"]');
@@ -107,6 +106,31 @@ function getHistoryInfo(modalId, slug, parentSlug) {
                 
             }
         
+        });     
+}}
+
+function getJobInfo(modalId, slug, historySlug, incidenceSlug) {
+    if (modalId == 'editar_modal' && slug) {
+        fetch(`/api/job/${slug}`)
+        .then( response => response.json() )
+        .then( data =>{
+            console.log(data);
+            const title = document.querySelector('#edit__form input[name="title"]');
+            const description = document.querySelector('#edit__form textarea[name="description"]');
+            const state = document.querySelector('#edit__form #id_state');
+            const form = document.querySelector('#edit__form');
+            const urlForm = `/job/${incidenceSlug}/${historySlug}/${slug}/`
+
+            if (title) {
+                title.value = data.title !== "" ? data.title : '';
+                description.value = data.description !== "" ? data.description : '';
+                state.value = data.state !== "" ? data.state : "";
+                form.action = urlForm
+
+            }else{
+                console.log("no está cargado de manera correcta");
+                
+            }
         });     
 }}
 
@@ -130,8 +154,7 @@ openModalHistory2.forEach( but =>{
     but.addEventListener('click', ()=>{
         const historySlug = but.getAttribute("data-history-slug");
         const incidenceSlug = but.getAttribute("data-incidence-slug");
-        console.log(historySlug);
-        console.log(incidenceSlug);
+        
 
         modal2.classList.add('modal__show')
         getHistoryInfo('editar_modal', historySlug, incidenceSlug)
@@ -139,6 +162,21 @@ openModalHistory2.forEach( but =>{
     
 })
 
+
+openModalJob2.forEach( but =>{
+
+    but.addEventListener('click', ()=>{
+        
+        const jobSlug = but.getAttribute("data-job-slug")
+        const historySlug = but.getAttribute("data-history-slug");
+        const incidenceSlug = but.getAttribute("data-incidence-slug");
+       
+
+        modal2.classList.add('modal__show')
+        getJobInfo('editar_modal', jobSlug, historySlug, incidenceSlug)
+    })
+
+})
 
 
 

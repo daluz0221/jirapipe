@@ -36,10 +36,6 @@
       <form  class="modal__container" method="post" action="{% url 'jobs_app:create_huser' parent_incidence.slug %}">
          <span class="modal__close">X</span>
           {% csrf_token %}
-          <!-- <div class="modal__title">modal title</div>
-          <div class="modal_paragraph">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. A asperiores, earum aperiam molestiae deserunt optio?
-          </div> -->
           {{ history_user_form.as_p }}
           <button type="submit" class="modal__close">Cerrar modal</button>
       </form>
@@ -47,13 +43,9 @@
 
   <!-- Modal para actualizar una historia de usuario -->
   <section id="modal_edit" class="modal">
-   <form id="edit__form" class="modal__container" method="post" action="{% url 'jobs_app:create_huser' parent_incidence.slug %}">
+   <form id="edit__form" class="modal__container" method="post">
       <span id="close_modal" class="modal__close">X</span>
        {% csrf_token %}
-       <!-- <div class="modal__title">modal title</div>
-       <div class="modal_paragraph">
-           Lorem ipsum dolor sit, amet consectetur adipisicing elit. A asperiores, earum aperiam molestiae deserunt optio?
-       </div> -->
        {{ history_user_update_form.as_p }}
        <button type="submit" class="modal__close">Cerrar modal</button>
    </form>

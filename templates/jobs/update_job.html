@@ -1,0 +1,15 @@
+{% extends 'home.html' %}
+
+
+
+{% block content %}
+    
+  
+    <h1>tarea actualizada correctamente!</h1>
+
+
+    <a href="{% url 'jobs_app:history_user_detail' incidencia_slug huser_slug %}">Ver historia de usuario</a>
+    <a href="{% url 'jobs_app:home' %}">inicio</a>
+    
+
+{% endblock content %}

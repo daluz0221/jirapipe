@@ -9,7 +9,7 @@ from django.views.generic import TemplateView
 from django.urls import reverse_lazy
 
 from .forms import IncidenciaForm, HistoryUserForm, TareasForm
-from .models import Incidencias, HistoriaUsuario
+from .models import Incidencias, HistoriaUsuario, Tareas
 from .modules import get_incidents, get_history_user, get_tareas
 
 
@@ -81,6 +81,7 @@ class TareasView(MyLoginRequiredView):
         ctx["parent_incidence"] = incidencia
         ctx["tareas"] = incidencias.get("tareas_list")
         ctx["tarea_form"] = TareasForm
+        ctx["tarea_update_form"] = TareasForm
         
         return ctx
 
@@ -185,6 +186,14 @@ class UpdateHistoryUserView(UpdateLoginRequired):
     template_name = "jobs/update_huser.html"
     success_url = "."
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+
+        ctx["incidencia_slug"] = self.kwargs.get("incidencia_slug")
+
+        return ctx
+
+
 
 def get_huser_data(request, slug):
     obj = get_object_or_404(HistoriaUsuario, slug=slug)
@@ -192,4 +201,33 @@ def get_huser_data(request, slug):
         "title": obj.title,
         "description": obj.description,
         "tiempo_estimado": obj.estimate_time
+    })
+
+
+class UpdateTareaView(UpdateLoginRequired):
+    model = Tareas
+    fields = (
+        'title',
+        'description',
+        'state'
+    )
+    slug_url_kwarg = "job_slug"
+    template_name = "jobs/update_job.html"
+    success_url = "."
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+
+        ctx["incidencia_slug"] = self.kwargs.get("incidencia_slug")
+        ctx["huser_slug"] = self.kwargs.get("huser_slug")
+
+        return ctx
+
+
+def get_job_data(request, slug):
+    obj = get_object_or_404(Tareas, slug=slug)
+    return JsonResponse({
+        "title": obj.title,
+        "description": obj.description,
+        "state": obj.state
     })

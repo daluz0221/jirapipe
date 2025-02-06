@@ -10,8 +10,10 @@ from .views import (
     CreateTareaView,
     UpdateIncidenceView,
     UpdateHistoryUserView,
+    UpdateTareaView,
     get_incidence_data,
-    get_huser_data
+    get_huser_data,
+    get_job_data
 )
 
 app_name = "jobs_app"
@@ -27,13 +29,15 @@ urlpatterns = [
 
     path("incidencias/<slug:incidence_slug>/", UpdateIncidenceView.as_view(), name="update_incidence"),
     path("history-user/<slug:incidencia_slug>/<slug:huser_slug>/", UpdateHistoryUserView.as_view(), name="update_history"),
+    path("job/<slug:incidencia_slug>/<slug:huser_slug>/<slug:job_slug>/", UpdateTareaView.as_view(), name="update_history"),
 
 
 
 
     # Api
     path("api/incidence/<slug:slug>", get_incidence_data, name="get_incidence_data"),
-    path("api/history/<slug:slug>", get_huser_data, name="get_history_data")
+    path("api/history/<slug:slug>", get_huser_data, name="get_history_data"),
+    path("api/job/<slug:slug>", get_job_data, name="get_job_data"),
 
 
 ]
