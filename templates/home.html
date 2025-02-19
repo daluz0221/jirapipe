@@ -51,6 +51,7 @@
             <button type="button" class="edit_incidence" data-slug="{{ incidencia.slug }}">
                 Editar incidencia
             </button>
+            <button type="button" class="delete_incidence" data-slug="{{ incidencia.slug }}" data-title="{{ incidencia.titulo }}">Eliminar incidencia</button>
             <br><br><br>
 
         {% endfor %}
@@ -63,17 +64,19 @@
         Crear nueva incidencia
     </button>
 
-    
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <p class="alert alert-success">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <!-- Modal -->
     <section class="modal" id="editar_modal">
         <form  class="modal__container" method="post" action="{% url 'jobs_app:create_incidence' %}">
             <span class="modal__close">X</span>
             {% csrf_token %}
-            <!-- <div class="modal__title">modal title</div>
-            <div class="modal_paragraph">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. A asperiores, earum aperiam molestiae deserunt optio?
-            </div> -->
             {{ incidence_form.as_p }}
             <button type="submit" class="modal__close">Cerrar modal</button>
         </form>
@@ -85,10 +88,6 @@
         <form id="edit__form" class="modal__container" method="post" >
             <span id="close_modal" class="modal__close">X</span>
             {% csrf_token %}
-            <!-- <div class="modal__title">modal title</div>
-            <div class="modal_paragraph">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. A asperiores, earum aperiam molestiae deserunt optio?
-            </div> -->
             <p>
                         <label for="id_title">Title:</label>
                         <input type="text" name="title" maxlength="150" required="" id="id_title">
@@ -144,6 +143,18 @@
     </section>
     <!-- fin Modal 2-->
 
+    <!-- Modal 3 (delete) -->
+    <section class="modal" id="delete_modal">
+        <form id="delete_form" class="modal__container" method="post">
+            
+            {% csrf_token %}
+            <h2></h2>
+            
+            <button type="submit" class="modal__send">Sí</button>
+            <span id="modal_delete_close" class="modal__close">No</span>
+        </form>
+    </section>
+    <!-- fin Modal -->
 
 
     

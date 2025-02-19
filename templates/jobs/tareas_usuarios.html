@@ -18,8 +18,9 @@
         <p>{{ tarea.estado }}</p>
         <!-- Botón para abrir el modal 2-->
         <button type="button" class="edit_tarea" data-job-slug="{{ tarea.slug }}" data-history-slug="{{ parent_history_user.slug }}" data-incidence-slug="{{ parent_incidence.slug }}">
-            Editar historia de usuario
+            Editar Tarea
         </button>
+        <button type="button" class="delete_tarea" data-slug="{{ tarea.slug }}" data-title="{{ tarea.titulo }}">Eliminar Tarea</button>
         <br><br><br>
    {% endfor %}
    
@@ -36,7 +37,7 @@
    <section class="modal">
       <form  class="modal__container" method="post" action="{% url 'jobs_app:create_tarea' parent_incidence.slug parent_history_user.slug %}">
           {% csrf_token %}
-          <span id="close_modal" class="modal__close">X</span>
+          <span class="modal__close">X</span>
           <!-- <div class="modal__title">modal title</div>
           <div class="modal_paragraph">
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. A asperiores, earum aperiam molestiae deserunt optio?
@@ -55,6 +56,19 @@
         <button type="submit" class="modal__close">Cerrar modal</button>
     </form>
  </section>
+
+ <!-- Modal 3 (delete Tareas) -->
+<section class="modal" id="delete_modal">
+    <form id="delete_form" class="modal__container" method="post">
+        
+        {% csrf_token %}
+        <h2></h2>
+        
+        <button type="submit" class="modal__send">Sí</button>
+        <span id="modal_delete_close" class="modal__close">No</span>
+    </form>
+ </section>
+ <!-- fin Modal -->
 
 
    <a href="{% url 'jobs_app:home' %}">inicio</a>

@@ -11,7 +11,7 @@ from .models import Incidencias, HistoriaUsuario, Tareas
 def get_incidents(query_type, user, **kwargs):
 
     if query_type == "all":
-        incidents = Incidencias.objects.filter(user=user)
+        incidents = Incidencias.objects.filter(user=user, is_delete=False)
         incidents_list = []
         for incident in incidents:
             incident_dic = {
@@ -55,7 +55,7 @@ def get_history_user(query_type, **kwargs):
             } 
         except Incidencias.DoesNotExist:
             incidencia_dict = {}
-        histories = HistoriaUsuario.objects.filter(incidencia__slug=incident_slug)
+        histories = HistoriaUsuario.objects.filter(incidencia__slug=incident_slug, is_delete=False)
         history_list = []
         for history in histories:
             history_dict = {
@@ -95,7 +95,7 @@ def get_tareas(query_type, **kwargs):
         except HistoriaUsuario.DoesNotExist:
             history_user_dict = {}
 
-        tareas = Tareas.objects.filter(user_history__slug=history_user_slug)
+        tareas = Tareas.objects.filter(user_history__slug=history_user_slug, is_delete=False)
         tareas_list = []
         for tarea in tareas:
             tarea_dict = {

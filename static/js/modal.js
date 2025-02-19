@@ -9,9 +9,15 @@ const openModal2 = document.querySelectorAll('.edit_incidence');
 const openModalHistory2 = document.querySelectorAll('.edit_huser')
 const openModalJob2 = document.querySelectorAll('.edit_tarea')
 
+const openModal3 = document.querySelectorAll('.delete_incidence');
+const openModalHistory3 = document.querySelectorAll('.delete_huser');
+const openModalJob3 = document.querySelectorAll('.delete_tarea');
 
 const modal2 = document.querySelector('#modal_edit');
 const closeModal2 = document.querySelector("#close_modal");
+
+const modal3 = document.querySelector("#delete_modal");
+const closeModal3 = document.querySelector("#modal_delete_close");
 
 if (openModal) {
     openModal.addEventListener('click', ()=>{
@@ -135,48 +141,57 @@ function getJobInfo(modalId, slug, historySlug, incidenceSlug) {
 }}
 
 
-openModal2.forEach( but =>{
-    but.addEventListener('click', (event)=>{
+
+if(openModal2){
+    openModal2.forEach( but =>{
+        but.addEventListener('click', (event)=>{
+        
+            const slug = but.getAttribute("data-slug")
+            
+            
+        
+            modal2.classList.add('modal__show')
+            getIncidenceInfo('editar_modal', slug)    
+        })
+    } )    
+}
+
+
+
+
+
+if(openModalHistory2){
+    openModalHistory2.forEach( but =>{
+        but.addEventListener('click', ()=>{
+            const historySlug = but.getAttribute("data-history-slug");
+            const incidenceSlug = but.getAttribute("data-incidence-slug");
+            
     
-        const slug = but.getAttribute("data-slug")
+            modal2.classList.add('modal__show')
+            getHistoryInfo('editar_modal', historySlug, incidenceSlug)
+        })
         
-        
-    
-        modal2.classList.add('modal__show')
-        getIncidenceInfo('editar_modal', slug)    
-    })
-} )
-
-
-
-
-openModalHistory2.forEach( but =>{
-    but.addEventListener('click', ()=>{
-        const historySlug = but.getAttribute("data-history-slug");
-        const incidenceSlug = but.getAttribute("data-incidence-slug");
-        
-
-        modal2.classList.add('modal__show')
-        getHistoryInfo('editar_modal', historySlug, incidenceSlug)
     })
     
-})
+}
 
 
-openModalJob2.forEach( but =>{
+if (openModalJob2) {
+    openModalJob2.forEach( but =>{
 
-    but.addEventListener('click', ()=>{
-        
-        const jobSlug = but.getAttribute("data-job-slug")
-        const historySlug = but.getAttribute("data-history-slug");
-        const incidenceSlug = but.getAttribute("data-incidence-slug");
-       
-
-        modal2.classList.add('modal__show')
-        getJobInfo('editar_modal', jobSlug, historySlug, incidenceSlug)
-    })
-
-})
+        but.addEventListener('click', ()=>{
+            
+            const jobSlug = but.getAttribute("data-job-slug")
+            const historySlug = but.getAttribute("data-history-slug");
+            const incidenceSlug = but.getAttribute("data-incidence-slug");
+           
+    
+            modal2.classList.add('modal__show')
+            getJobInfo('editar_modal', jobSlug, historySlug, incidenceSlug)
+        })
+    
+    }) 
+}
 
 
 
@@ -184,5 +199,74 @@ openModalJob2.forEach( but =>{
 
 
 closeModal2.addEventListener('click', (e)=>{
+    console.log("test");
+    
     modal2.classList.remove('modal__show')
+})
+
+if (openModal3) {
+    openModal3.forEach( but =>{
+        but.addEventListener('click', (e)=>{
+            modal3.classList.add('modal__show')
+            const text = document.querySelector("#delete_modal h2")
+            const title = but.getAttribute("data-title")
+            const slug = but.getAttribute("data-slug")
+      
+            text.innerHTML = "¿Realmente desea eliminar " + title + " ?"
+    
+            const form = document.querySelector("#delete_form");
+            const urlform = `delete/Incidencias/${slug}/` 
+    
+            form.action = urlform
+    
+        })
+    }) 
+}
+
+
+if(openModalHistory3){
+    openModalHistory3.forEach( but =>{
+        but.addEventListener('click', (e)=>{
+            modal3.classList.add('modal__show')
+            const text = document.querySelector("#delete_modal h2")
+            const slug = but.getAttribute("data-slug");
+            const title = but.getAttribute("data-title");
+    
+            text.innerHTML = "¿Realmente desea eliminar " + title + " ?"
+            const form = document.querySelector("#delete_form");
+            const urlform = `delete/HistoriaUsuario/${slug}/` 
+            form.action = window.location.origin + "/" +  urlform
+    
+        })
+    } )
+    
+}
+
+
+if (openModalJob3) {
+    openModalJob3.forEach( but =>{
+        but.addEventListener('click', (e)=>{
+            modal3.classList.add('modal__show')
+            const text = document.querySelector("#delete_modal h2")
+            const slug = but.getAttribute("data-slug");
+            const title = but.getAttribute("data-title");
+    
+            text.innerHTML = "¿Realmente desea eliminar " + title + " ?"
+            const form = document.querySelector("#delete_form");
+            const urlform = `delete/Tareas/${slug}/` 
+            form.action = window.location.origin + "/" +  urlform
+    
+        })
+    } )
+     
+}
+
+
+closeModal3.addEventListener("click", (e)=>{
+    console.log("llego");
+    e.preventDefault()
+
+    
+    modal3.classList.remove('modal__show');
+
 })

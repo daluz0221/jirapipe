@@ -13,7 +13,8 @@ from .views import (
     UpdateTareaView,
     get_incidence_data,
     get_huser_data,
-    get_job_data
+    get_job_data,
+    delete_object_from_model
 )
 
 app_name = "jobs_app"
@@ -30,6 +31,8 @@ urlpatterns = [
     path("incidencias/<slug:incidence_slug>/", UpdateIncidenceView.as_view(), name="update_incidence"),
     path("history-user/<slug:incidencia_slug>/<slug:huser_slug>/", UpdateHistoryUserView.as_view(), name="update_history"),
     path("job/<slug:incidencia_slug>/<slug:huser_slug>/<slug:job_slug>/", UpdateTareaView.as_view(), name="update_history"),
+
+    path("delete/<str:model_name>/<slug:object_slug>/", delete_object_from_model, name="delete-object"),
 
 
 

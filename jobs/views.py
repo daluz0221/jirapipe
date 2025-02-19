@@ -1,12 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
+from django.apps import apps
+from django.contrib import messages
 
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import TemplateView
 
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from .forms import IncidenciaForm, HistoryUserForm, TareasForm
 from .models import Incidencias, HistoriaUsuario, Tareas
@@ -231,3 +233,17 @@ def get_job_data(request, slug):
         "description": obj.description,
         "state": obj.state
     })
+
+
+
+def delete_object_from_model(request, model_name, object_slug):
+    if request.method == "POST":
+        model = apps.get_model("jobs", model_name)
+        instance = get_object_or_404(model, slug=object_slug)
+        instance.is_delete = True
+        instance.save()
+
+        messages.success(request, "Eliminación exitosa")
+        return redirect(reverse("jobs_app:home"))
+    
+    return render(request, "error.html")

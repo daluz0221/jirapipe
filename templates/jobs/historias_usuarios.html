@@ -19,6 +19,7 @@
          <button type="button" class="edit_huser" data-history-slug="{{ history.slug }}" data-incidence-slug="{{ parent_incidence.slug }}">
             Editar historia de usuario
         </button>
+        <button type="button" class="delete_huser" data-slug="{{ history.slug }}" data-title="{{ history.titulo }}">Eliminar Historia de usuario</button>
         <br><br><br>
       {% endfor %}
 
@@ -50,6 +51,19 @@
        <button type="submit" class="modal__close">Cerrar modal</button>
    </form>
 </section>
+
+<!-- Modal 3 (delete HU) -->
+<section class="modal" id="delete_modal">
+   <form id="delete_form" class="modal__container" method="post">
+       
+       {% csrf_token %}
+       <h2></h2>
+       
+       <button type="submit" class="modal__send">Sí</button>
+       <span id="modal_delete_close" class="modal__close">No</span>
+   </form>
+</section>
+<!-- fin Modal -->
     
 
   <a href="{% url 'jobs_app:home' %}">inicio</a>
