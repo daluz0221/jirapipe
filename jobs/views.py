@@ -60,12 +60,29 @@ class HistoryUserView(MyLoginRequiredView):
         incident = self.kwargs.get("incidencia_slug")
        
         incidencias = get_history_user("all", incident_slug=incident)
-        ctx["user_histories"] = incidencias.get("history_list")
-        ctx["parent_incidence"] = incidencias.get("incidencia_dict")
-        ctx["history_user_form"] = HistoryUserForm
-        ctx["history_user_update_form"] = HistoryUserForm
+        if not incidencias == "not found":
+            ctx["user_histories"] = incidencias.get("history_list")
+            ctx["parent_incidence"] = incidencias.get("incidencia_dict")
+            ctx["history_user_form"] = HistoryUserForm
+            ctx["history_user_update_form"] = HistoryUserForm
+            
+            return ctx
         
+        self.template_name = "error.html"
         return ctx
+
+
+
+class AllHistoryUserView(MyLoginRequiredView):
+    template_name = "all_history_users.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super(AllHistoryUserView, self).get_context_data(**kwargs)
+
+        ctx["histories_user"] = get_history_user("home")
+            
+        return ctx
+       
 
 
 class TareasView(MyLoginRequiredView):
@@ -79,14 +96,29 @@ class TareasView(MyLoginRequiredView):
        
         incidencia = get_incidents("one", self.request.user, slug=incident)
         incidencias = get_tareas("all", history_user_slug=history_user_slug)
-        ctx["parent_history_user"] = incidencias.get("history_user_dict")
-        ctx["parent_incidence"] = incidencia
-        ctx["tareas"] = incidencias.get("tareas_list")
-        ctx["tarea_form"] = TareasForm
-        ctx["tarea_update_form"] = TareasForm
+        if not (incidencia == "not found" or incidencias == "not found"):
+
+            ctx["parent_history_user"] = incidencias.get("history_user_dict")
+            ctx["parent_incidence"] = incidencia
+            ctx["tareas"] = incidencias.get("tareas_list")
+            ctx["tarea_form"] = TareasForm
+            ctx["tarea_update_form"] = TareasForm
         
+            return ctx
+        
+        self.template_name = "error.html"
         return ctx
 
+
+class AllTareasView(MyLoginRequiredView):
+    template_name = "all_tareas.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super(AllTareasView, self).get_context_data(**kwargs)
+
+        ctx["tareas"] = get_tareas("home")
+            
+        return ctx
 
 class CreateIncidenceView(CreateLoginRequiredView):
     

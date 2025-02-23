@@ -1,0 +1,68 @@
+{% load static date_filters %}
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css'
+    integrity='sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==' crossorigin='anonymous'
+    referrerpolicy='no-referrer' />
+    <title></title>
+</head>
+<body>
+
+
+
+    <header>
+        <h1>Página de pipe</h1>
+    </header>
+
+    <a href="{% url 'jobs_app:home' %}">Ver incidencias</a>
+    <a href="{% url 'jobs_app:all_husers' %}">Ver historias de usuario</a>
+    
+    {% block content %}
+        
+
+        
+    <h2>Inicio Jira {{ user.get_username }}</h2>
+
+    
+    {% if tareas %}
+        <h3>Tus tareas</h3>
+        {% for incidencia in tareas %}
+            Título: {{ incidencia.titulo }} <br>
+            descripcion: {{ incidencia.descripcion }}<br>
+            progreso: {{ incidencia.progreso|to_percentage }}<br>
+            
+            {% if incidencia.prioridad == 1 %}
+                Prioridad: Alta <br>
+            {% elif incidencia.prioridad == 2 %}
+                Prioridad: Media <br>
+            {% elif incidencia.prioridad == 3 %}
+                Prioridad: Baja     <br>
+            {% endif %}
+            
+            Tipo de incidencia: {{ incidencia.tipo }} <br>
+            
+            Fecha límite: {{ incidencia.Fecha_limite }}<br>
+
+            
+            <br>
+            <!-- Botón para abrir el modal 2-->
+            
+
+        {% endfor %}
+    {% else %}
+        <h3>De momento no tienes historias de usuario activas</h3>
+    {% endif %}
+
+
+    
+    {% endblock content %}
+
+    <h3><a href="{% url 'users_app:user_logout' %}">Log out</a></h3>
+    <script src="{% static 'js/modal.js' %}"></script>
+</body>
+</html>

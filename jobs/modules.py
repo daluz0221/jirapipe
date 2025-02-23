@@ -32,7 +32,8 @@ def get_incidents(query_type, user, **kwargs):
         
         slug_incidence = kwargs.get("slug")
         incidence = Incidencias.objects.get(slug=slug_incidence)
-        
+        if incidence.is_delete:
+            return "not found"
 
         return incidence
         
@@ -40,11 +41,21 @@ def get_incidents(query_type, user, **kwargs):
 
 def get_history_user(query_type, **kwargs):
 
+    if query_type == "home":
+        try:
+            husers = HistoriaUsuario.objects.filter(is_delete=False)
+        except:
+            husers = []
+
+        return husers
+
 
     if query_type == "all":
         try:
             incident_slug = kwargs.get("incident_slug")
             incidencia = Incidencias.objects.get(slug=incident_slug)
+            if incidencia.is_delete:
+                return "not found"
             incidencia_dict = {
                 "slug": incidencia.slug,
                 "titulo": incidencia.title,
@@ -55,6 +66,7 @@ def get_history_user(query_type, **kwargs):
             } 
         except Incidencias.DoesNotExist:
             incidencia_dict = {}
+        
         histories = HistoriaUsuario.objects.filter(incidencia__slug=incident_slug, is_delete=False)
         history_list = []
         for history in histories:
@@ -82,11 +94,21 @@ def get_history_user(query_type, **kwargs):
     
 def get_tareas(query_type, **kwargs):
 
+    if query_type == "home":
+        try:
+            tareas = Tareas.objects.filter(is_delete=False)
+        except:
+            tareas = []
+
+        return tareas
+
 
     if query_type == "all":
         try:
             history_user_slug = kwargs.get("history_user_slug")
             history_user = HistoriaUsuario.objects.get(slug=history_user_slug)
+            if history_user.is_delete:
+                return "not found"
             history_user_dict = {
                 "titulo": history_user.title,
                 "descripcion": history_user.description,

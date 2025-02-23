@@ -3,6 +3,8 @@ from django.urls import path
 from .views import ( 
     HomeView, 
     HistoryUserView, 
+    AllHistoryUserView,
+    AllTareasView,
     TareasView, 
     CreateIncidenceView, 
     CreateIncidenceView, 
@@ -21,6 +23,9 @@ app_name = "jobs_app"
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
+    path("histories-user", AllHistoryUserView.as_view(), name="all_husers"),
+    path("tareas", AllTareasView.as_view(), name="all_tareas"),
+    
     path("history-user/<slug:incidencia_slug>/", HistoryUserView.as_view(), name="incidencia_detail"),
     path("tareas/<slug:incidencia_slug>/<slug:history_user_slug>/", TareasView.as_view(), name="history_user_detail"),
 

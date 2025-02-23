@@ -51,6 +51,17 @@ class Incidencias(GeneralClass):
     
 
 
+    def update_progres(self):
+        total_huser = self.historias.count()
+        if total_huser > 0:
+            completed = self.historias.filter(is_completed=True).count()
+            self.progress = ( completed / total_huser ) * 100
+        else:
+            self.progress = 0.0
+        
+        self.save(update_fields=["progress"])
+
+
     class Meta:
         """Meta definition for Incidencias."""
 
@@ -67,6 +78,21 @@ class HistoriaUsuario(GeneralClass):
 
     incidencia = models.ForeignKey(Incidencias, on_delete=models.CASCADE, related_name="historias")
     estimate_time = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)    
+    progress = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.incidencia.update_progres()
+
+    def update_progres(self):
+        total_tareas = self.tareas.count()
+        if total_tareas > 0:
+            completed = self.tareas.filter(is_completed=True).count()
+            self.progress = ( completed / total_tareas ) * 100
+        else:
+            self.progress = 0.0
+        
+        self.save(update_fields=["progress"])
 
 
     class Meta:
@@ -93,6 +119,10 @@ class Tareas(GeneralClass):
     state = models.CharField(max_length=15, choices=STATE_CHOICES)
     active = models.BooleanField(default=False)
     user_history = models.ForeignKey(HistoriaUsuario, on_delete=models.CASCADE, related_name="tareas")
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.user_history.update_progres()
 
     class Meta:
         """Meta definition for Tareas."""

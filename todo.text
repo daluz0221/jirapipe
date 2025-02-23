@@ -2,10 +2,16 @@
 
 2. el progreso de las incidencias y las Huser, se puede medir mediante la cantidad de tareas terminadas, es decir, el total dividido por el # de tareas, y las tareas que estén completas van sumando al porcentaje de éxito de la incidencia o Huser
 
-3. Hacer la división por incidencias, tdas las Huser y todas las tareas, agregar filtro
+3. Hacer la división por incidencias, todas las Huser y todas las tareas, agregar filtro
     a. Por el campo state/tipo, etc
     b. por el campo fecha de creación
     c. campo de progreso
     d. campo prioridad
     e. campo tiempo estimado
     f. por palabra en el buscador
+
+
+
+punto 1, listo
+punto 2, listo
+punto 3, ya se muestran todas las incidencias, husers y tareas (que no estén "eliminadas"), faltan los filtros
