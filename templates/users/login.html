@@ -3,8 +3,35 @@
 
 
 {% block content %}
+
+    <div class="wrapper">
+        <div class="form-box login">
+            <h2>Form de login</h2>
+            <form method="post" action="{% url 'users_app:user_login' %}" autocomplete="off">
+                {% csrf_token %}
+                <div class="input-box">
+                    <input type="text" name="username" id="id_username" required >
+                    <label for="id_username">Nombre de usuario</label>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="password" id="id_password" required >
+                    <label for="id_password">Contraseña</label>
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <input type="hidden" name="form_login" value="1">
+                <button type="submit" class="btn">Logearse</button>
+                <div class="register-link">
+                    <p>¿No tienes una cuenta? <a href="#">Regístrate </a></p> 
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}
     
-    <h1>Form de login</h1>
+
+
     <form method="post" action="{% url 'users_app:user_login' %}">
         {% csrf_token %}
         {{ form_login.as_p }}
@@ -19,6 +46,3 @@
         <input type="hidden" name="form_registro" value="1">
         <button type="submit">Registrar</button>
     </form>
-
-{% endblock content %}
-    

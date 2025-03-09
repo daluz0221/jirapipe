@@ -38,7 +38,7 @@ class UserRegisterForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(UserRegisterForm, self).clean()
-        print("========testnew", self.cleaned_data.get("password1"), self.cleaned_data.get("password2"))
+
         if len(self.cleaned_data.get("password1")) <= 5:
             self.add_error("password1", "La contraseña debe tener 6 o más caracteres")
 
@@ -53,22 +53,13 @@ class LoginForm(forms.Form):
     username = forms.CharField(
         label="Nombre de usuario",
         required=True,
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "Nombre de usuario",
-                "style": "{ margin: 10px }"
-            }
-        )
+        
     )
 
     password = forms.CharField(
         label="Contraseña",
         required=True,
-        widget=forms.PasswordInput(
-            attrs={
-                "placeholder": "Contraseña"
-            }
-        )
+        
     )
 
 
