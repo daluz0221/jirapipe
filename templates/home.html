@@ -9,63 +9,74 @@
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css'
     integrity='sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==' crossorigin='anonymous'
     referrerpolicy='no-referrer' />
-    <title></title>
+    {% block extracss %}
+    <link rel='stylesheet' href="{% static 'css/home.css' %}">
+    {% endblock extracss %}
+    <title>Home</title>
 </head>
 <body>
 
-
-
-    <header>
-        <h1>Página de pipe</h1>
-    </header>
-
-    <a href="{% url 'jobs_app:all_husers' %}">Ver historias de usuario</a>
-    <a href="{% url 'jobs_app:all_tareas' %}">Ver Tareas</a>
+    
+    {% block navigate %}
+        <div class="navbar">
+            <a href="{% url 'jobs_app:all_husers' %}">Ver historias de usuario</a>
+            <a href="{% url 'jobs_app:all_tareas' %}">Ver Tareas</a>
+        </div>
+    {% endblock navigate %}
     
     {% block content %}
-        
-
-        
-    <h2>Inicio Jira {{ user.get_username }}</h2>
+        <div class="main__content">
 
     
-    {% if user_incidencias %}
-        <h3>Tus incidencias</h3>
-        {% for incidencia in user_incidencias %}
-            Título: {{ incidencia.titulo }} <br>
-            descripcion: {{ incidencia.descripcion }}<br>
-            progreso: {{ incidencia.progreso|to_percentage }}<br>
+        <div class="main__title">
+            <h2>Inicio Jira {{ user.get_username }}</h2>
+        </div>    
+
+        <div class="main__data">
+
             
-            {% if incidencia.prioridad == 1 %}
-                Prioridad: Alta <br>
-            {% elif incidencia.prioridad == 2 %}
-                Prioridad: Media <br>
-            {% elif incidencia.prioridad == 3 %}
-                Prioridad: Baja     <br>
+            {% if user_incidencias %}
+                <h3>Tus incidencias</h3>
+                {% for incidencia in user_incidencias %}
+                    Título: {{ incidencia.titulo }} <br>
+                    descripcion: {{ incidencia.descripcion }}<br>
+                    progreso: {{ incidencia.progreso|to_percentage }}<br>
+                    
+                    {% if incidencia.prioridad == 1 %}
+                        Prioridad: Alta <br>
+                    {% elif incidencia.prioridad == 2 %}
+                        Prioridad: Media <br>
+                    {% elif incidencia.prioridad == 3 %}
+                        Prioridad: Baja     <br>
+                    {% endif %}
+                    
+                    Tipo de incidencia: {{ incidencia.tipo }} <br>
+                    
+                    Fecha límite: {{ incidencia.Fecha_limite }}<br>
+
+                    <a href="{% url 'jobs_app:incidencia_detail' incidencia_slug=incidencia.slug %}">Ver incidencia</a>
+                    <br>
+                    <!-- Botón para abrir el modal 2-->
+                    <button type="button" class="edit_incidence" data-slug="{{ incidencia.slug }}">
+                        Editar incidencia
+                    </button>
+                    <button type="button" class="delete_incidence" data-slug="{{ incidencia.slug }}" data-title="{{ incidencia.titulo }}">Eliminar incidencia</button>
+                    <br><br><br>
+
+                {% endfor %}
+            {% else %}
+                <h3>De momento no tienes incidencias activas</h3>
             {% endif %}
-            
-            Tipo de incidencia: {{ incidencia.tipo }} <br>
-            
-            Fecha límite: {{ incidencia.Fecha_limite }}<br>
 
-            <a href="{% url 'jobs_app:incidencia_detail' incidencia_slug=incidencia.slug %}">Ver incidencia</a>
-            <br>
-            <!-- Botón para abrir el modal 2-->
-            <button type="button" class="edit_incidence" data-slug="{{ incidencia.slug }}">
-                Editar incidencia
+            <!-- Botón para abrir el modal -->
+            <button type="button" class="create_incidence">
+                Crear nueva incidencia
             </button>
-            <button type="button" class="delete_incidence" data-slug="{{ incidencia.slug }}" data-title="{{ incidencia.titulo }}">Eliminar incidencia</button>
-            <br><br><br>
+        </div>
 
-        {% endfor %}
-    {% else %}
-        <h3>De momento no tienes incidencias activas</h3>
-    {% endif %}
+    </div>
 
-    <!-- Botón para abrir el modal -->
-    <button type="button" class="create_incidence">
-        Crear nueva incidencia
-    </button>
+ 
 
     {% if messages %}
         <div>
@@ -163,7 +174,11 @@
     
     {% endblock content %}
 
-    <h3><a href="{% url 'users_app:user_logout' %}">Log out</a></h3>
+    <div class="info-section">
+        gg
+        <h3><a href="{% url 'users_app:user_logout' %}">Log out</a></h3>
+    </div>
+
     <script src="{% static 'js/modal.js' %}"></script>
 </body>
 </html>
