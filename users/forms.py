@@ -31,8 +31,6 @@ class UserRegisterForm(forms.ModelForm):
         model = User
         fields = (
             "username",
-            "names",
-            "lastnames",
             "email"
         )
 

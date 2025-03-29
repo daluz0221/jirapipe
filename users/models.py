@@ -10,8 +10,8 @@ from .managers import UserManager
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=50, verbose_name="Nombre de usuario", unique=True)
-    names = models.CharField(max_length=50, verbose_name="Nombres")
-    lastnames = models.CharField(max_length=50, verbose_name="Apellidos") 
+    names = models.CharField(max_length=50, verbose_name="Nombres", default="")
+    lastnames = models.CharField(max_length=50, verbose_name="Apellidos", default="") 
     email = models.EmailField()
     
     is_staff = models.BooleanField(default=False)

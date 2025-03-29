@@ -5,27 +5,66 @@
 {% block content %}
 
     <div class="wrapper">
+        <span class="bkg-animate"></span>
+        <span class="bkg-animate2"></span>
         <div class="form-box login">
-            <h2>Form de login</h2>
+            <h2 class="animate" style="--i:0; --j:21">Login</h2>
             <form method="post" action="{% url 'users_app:user_login' %}" autocomplete="off">
                 {% csrf_token %}
-                <div class="input-box">
+                <div class="input-box animate" style="--i:1; --j:22">
                     <input type="text" name="username" id="id_username" required >
                     <label for="id_username">Nombre de usuario</label>
                     <i class="fa-solid fa-user"></i>
                 </div>
-                <div class="input-box">
+                <div class="input-box animate" style="--i:2; --j:23">
                     <input type="password" name="password" id="id_password" required >
                     <label for="id_password">Contraseña</label>
                     <i class="fa-solid fa-lock"></i>
                 </div>
                 <input type="hidden" name="form_login" value="1">
-                <button type="submit" class="btn">Logearse</button>
-                <div class="register-link">
-                    <p>¿No tienes una cuenta? <a href="#">Regístrate </a></p> 
+                <button type="submit" class="btn animate" style="--i:3; --j:24">Logearse</button>
+                <div class="register-link animate" style="--i:4; --j:25">
+                    <p>¿No tienes una cuenta? <a href="#" class="register_link">Regístrate </a></p> 
                 </div>
             </form>
         </div>
+        <div class="info-text login">
+            <h2 class="animate" style="--i:0; --j:20">Hola de nuevo</h2>
+            <p class="animate" style="--i:1; --j:21">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+        </div>
+
+        <div class="form-box register">
+            <h2 class="animate" style="--i:17; --j:0">Regístrate</h2>
+            <form method="post" action="{% url 'users_app:user_login' %}">
+                {% csrf_token %}
+                <div class="input-box animate" style="--i:18; --j:1">
+                    <input type="text" name="username" id="id_username" required >
+                    <label for="id_username">Nombre de usuario</label>
+                </div>
+                <div class="input-box animate" style="--i:19; --j:2">
+                    <input type="email" name="email" id="id_email" required >
+                    <label for="id_email">Correo</label>
+                </div>
+                <div class="input-box animate" style="--i:20; --j:3">
+                    <input type="password" name="password1" id="id_password1" required >
+                    <label for="id_password1">Contraseña</label>
+                </div>
+                <div class="input-box animate" style="--i:21; --j:4">
+                    <input type="password" name="password2" id="id_password2" required >
+                    <label for="id_password2">Repetir contraseña</label>
+                </div>
+                <input type="hidden" name="form_registro" value="1">
+                <button type="submit" class="btn animate" style="--i:22; --j:5">Registrar</button>
+                <div class="register-link animate" style="--i:23; --j:6">
+                    <p>Ya tienes una cuenta? <a href="#" class="login_link">Inicia sesión </a></p> 
+                </div>
+            </form>
+        </div>
+        <div class="info-text register">
+            <h2 class="animate" style="--i:17; --j:0;">Hola de nuevo</h2>
+            <p class="animate" style="--i:18; --j:1;">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+        </div>
+
     </div>
 
 {% endblock content %}
